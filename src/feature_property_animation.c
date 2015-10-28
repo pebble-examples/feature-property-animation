@@ -30,13 +30,13 @@ static void destroy_property_animation(PropertyAnimation **prop_animation) {
 static void click_handler(ClickRecognizerRef recognizer, void *context) {
   Layer *layer = text_layer_get_layer(s_text_layer);
 
-  GRect to_rect = (s_toggle) ? GRect(4, 4, 120, 60) : GRect(84, 92, 60, 60);
-
+  GRect to_rect = (s_toggle) ? GRect(PBL_IF_RECT_ELSE(4, 30), PBL_IF_RECT_ELSE(4, 30), 120, 60) : GRect(84, 92, 60, 60);
   s_toggle = !s_toggle;
 
   destroy_property_animation(&s_prop_animation);
 
   s_prop_animation = property_animation_create_layer_frame(layer, NULL, &to_rect);
+
   animation_set_duration((Animation*) s_prop_animation, 400);
   switch (click_recognizer_get_button_id(recognizer)) {
     case BUTTON_ID_UP:
@@ -82,9 +82,13 @@ static void click_config_provider(void *context) {
 static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(s_main_window);
   GRect bounds = layer_get_frame(window_layer);
+  const uint8_t offset = PBL_IF_RECT_ELSE(0, 30);
 
-  s_text_layer = text_layer_create(GRect(0, 0, 60, 60));
+  s_text_layer = text_layer_create(GRect(offset, offset, 60, 60));
   text_layer_set_text(s_text_layer, "Started!");
+  text_layer_set_text_color(s_text_layer, GColorWhite);
+  text_layer_set_background_color(s_text_layer, GColorBlack);
+
   layer_add_child(window_layer, text_layer_get_layer(s_text_layer));
 
   GRect to_rect = GRect(84, 92, 60, 60);
