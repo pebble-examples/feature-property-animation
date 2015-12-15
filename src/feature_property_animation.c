@@ -16,7 +16,9 @@ static void animation_stopped(Animation *animation, bool finished, void *data) {
 
 static void click_handler(ClickRecognizerRef recognizer, void *context) {
   Layer *layer = text_layer_get_layer(s_text_layer);
-  GRect to_rect = (s_toggle) ? GRect(4, 4, 120, 60) : GRect(84, 92, 60, 60);
+  GRect to_rect = (s_toggle) ? 
+    GRect(10, PBL_IF_ROUND_ELSE(50, 4), 120, 60) : 
+    GRect(PBL_IF_ROUND_ELSE(120, 84), 92, 60, 60);
 
   s_toggle = !s_toggle;
 
@@ -55,7 +57,7 @@ static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(s_main_window);
   GRect bounds = layer_get_frame(window_layer);
 
-  s_text_layer = text_layer_create(GRect(0, 0, 60, 60));
+  s_text_layer = text_layer_create(GRect(10, PBL_IF_ROUND_ELSE(60, 0), 60, 60));
   text_layer_set_text(s_text_layer, "Press a button!");
   layer_add_child(window_layer, text_layer_get_layer(s_text_layer));
 }
